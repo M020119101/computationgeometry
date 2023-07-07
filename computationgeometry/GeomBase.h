@@ -18,114 +18,122 @@ std::string to_string(const T& value) {
     return ss.str();
 }
 
-class Point3D {
-private:
-    double x, y, z, w;
+class Matrix3D {
 public:
-    Point3D(double x = 0.0, double y = 0.0, double z = 0.0, double w = 1.0) : x(x), y(y), z(z), w(w) {}
+    std::vector<std::vector<int>> a;
 
-    string toString() {
-        return "Point3D: " + to_string(x) + ", " + to_string(y) + ", " + to_string(z);
+    Matrix3D() {
+        a = { {1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1} };
     }
 
-    Point3D clone() {
-        return Point3D(x, y, z, w);
-    }
-
-    // Getter函数
-    double getX() const { return x; }
-    double getY() const { return y; }
-    double getZ() const { return z; }
-    double getW() const { return w; }
-
-    // Setter函数
-    void setX(double val) { x = val; }
-    void setY(double val) { y = val; }
-    void setZ(double val) { z = val; }
-    void setW(double val) { w = val; }
-
-    Vector3D pointTo(Point3D other) {
-        double dx = other.x - x;
-        double dy = other.y - y;
-        double dz = other.z - z;
-        return Vector3D(dx, dy, dz);
-    }
-
-    //平移当前点
-    void translate(Vector3D vec) {
-        x += vec.getDx();
-        y += vec.getDy();
-        z += vec.getDz();
-    }
-
-    //平移后返回新点
-    Point3D translated(Vector3D vec) const{
-        double newX = x + vec.getDx();
-        double newY = y + vec.getDy();
-        double newZ = z + vec.getDz();
-        return Point3D(newX, newY, newZ,vec.getDw());
-    }
-
-    Point3D multiplied(Matrix3D m) const{
-        double newX = x * m.a[0][0] + y * m.a[1][0] + z * m.a[2][0] + w * m.a[3][0];
-        double newY = x * m.a[0][1] + y * m.a[1][1] + z * m.a[2][1] + w * m.a[3][1];
-        double newZ = x * m.a[0][2] + y * m.a[1][2] + z * m.a[2][2] + w * m.a[3][2];
-        return Point3D(newX, newY, newZ);
-    }
-
-    double distance(Point3D other) {
-        return pointTo(other).length();
-    }
-
-    double distanceSquare(Point3D other) {
-        return pointTo(other).lengthSquare();
-    }
-
-    //两点中点
-    Point3D middle(Point3D other) {
-        double midX = (x + other.x) / 2;
-        double midY = (y + other.y) / 2;
-        double midZ = (z + other.z) / 2;
-        return Point3D(midX, midY, midZ);
-    }
-
-    //重合
-    bool isCoincide(Point3D other, double dis2 = epsilonSquare) {
-        double d2 = pointTo(other).lengthSquare();
-        if (d2 <= dis2) {
-            return true;
+    std::string toString() const {
+        std::string result = "Matrix3D:\n";
+        for (const auto& row : a) {
+            result += std::to_string(row[0]) + " " + std::to_string(row[1]) + " "
+                + std::to_string(row[2]) + " " + std::to_string(row[3]) + "\n";
         }
-        else {
-            return false;
+        return result;
+    }
+
+    void makeIdentical() {
+        a = { {1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1} };
+    }
+
+    Matrix3D multiplied(const Matrix3D& other) const {
+        Matrix3D res;
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                res.a[i][j] = a[i][0] * other.a[0][j]
+                    + a[i][1] * other.a[1][j]
+                    + a[i][2] * other.a[2][j]
+                    + a[i][3] * other.a[3][j];
+            }
         }
+        return res;
     }
 
-    //是否完全重合
-    bool isIdentical(Point3D other) {
-        if (x == other.x && y == other.y && z == other.z) {
-            return true;
+    int getDeterminant() const {
+        // 计算行列式，请根据实际情况进行实现
+    }
+
+    Matrix3D getReverseMatrix() const {
+        // 计算逆矩阵，请根据实际情况进行实现
+    }
+
+    //生成平移矩阵
+    static Matrix3D createTranslateMatrix(int dx, int dy, int dz) {
+        Matrix3D m;
+        m.a[3][0] = dx;
+        m.a[3][1] = dy;
+        m.a[3][2] = dz;
+        return m;
+    }
+
+    //缩放矩阵
+    static Matrix3D createScaleMatrix(int sx, int sy, int sz) {
+        Matrix3D m;
+        m.a[0][0] = sx;
+        m.a[1][1] = sy;
+        m.a[2][2] = sz;
+        return m;
+    }
+
+    //旋转矩阵
+    static Matrix3D createRotateMatrix(const std::string& axis, double angle) {
+        Matrix3D m;
+        double sinVal = std::sin(angle);
+        double cosVal = std::cos(angle);
+
+        if (axis == "X" || axis == "x") {
+            m.a[1][1] = cosVal;
+            m.a[1][2] = sinVal;
+            m.a[2][1] = -sinVal;
+            m.a[2][2] = cosVal;
         }
-        else {
-            return false;
+        else if (axis == "Y" || axis == "y") {
+            m.a[0][0] = cosVal;
+            m.a[0][2] = -sinVal;
+            m.a[2][0] = sinVal;
+            m.a[2][2] = cosVal;
         }
+        else if (axis == "Z" || axis == "z") {
+            m.a[0][0] = cosVal;
+            m.a[0][1] = sinVal;
+            m.a[1][0] = -sinVal;
+            m.a[1][1] = cosVal;
+        }
+        return m;
     }
 
-    Point3D operator+(Vector3D vec) {
-        return translated(vec);
+    static Matrix3D createMirrorMatrix(const std::vector<int>& point, const std::vector<int>& normal) {
+        // 创建镜面矩阵，请根据实际情况进行实现
     }
 
-    Vector3D operator-(Point3D other) {
-        return pointTo(other);
+    Matrix3D operator*(const Matrix3D& other) const {
+        return multiplied(other);
     }
 
-    Point3D operator*(Matrix3D matrix) {
-        double newX = x * matrix.a[0][0] + y * matrix.a[1][0] + z * matrix.a[2][0] + w * matrix.a[3][0];
-        double newY = x * matrix.a[0][1] + y * matrix.a[1][1] + z * matrix.a[2][1] + w * matrix.a[3][1];
-        double newZ = x * matrix.a[0][2] + y * matrix.a[1][2] + z * matrix.a[2][2] + w * matrix.a[3][2];      
-        double newW = x * matrix.a[0][3] + y * matrix.a[1][3] + z * matrix.a[2][3] + w * matrix.a[3][3];
-        return Point3D(newX, newY, newZ, newW);
+    Matrix3D operator+(const Matrix3D& other) const {
+        Matrix3D res;
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                res.a[i][j] = a[i][j] + other.a[i][j];
+            }
+        }
+        return res;
+    }
+
+    Matrix3D operator-(const Matrix3D& other) const {
+        Matrix3D res;
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                res.a[i][j] = a[i][j] - other.a[i][j];
+            }
+        }
+        return res;
     }
 };
+
 
 class Vector3D {
 private:
@@ -263,118 +271,114 @@ public:
     }
 };
 
-class Matrix3D {
+
+class Point3D {
+private:
+    double x, y, z, w;
 public:
-    std::vector<std::vector<int>> a;
+    Point3D(double x = 0.0, double y = 0.0, double z = 0.0, double w = 1.0) : x(x), y(y), z(z), w(w) {}
 
-    Matrix3D() {
-        a = { {1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1} };
+    string toString() {
+        return "Point3D: " + to_string(x) + ", " + to_string(y) + ", " + to_string(z);
     }
 
-    std::string toString() const {
-        std::string result = "Matrix3D:\n";
-        for (const auto& row : a) {
-            result += std::to_string(row[0]) + " " + std::to_string(row[1]) + " "
-                + std::to_string(row[2]) + " " + std::to_string(row[3]) + "\n";
+    Point3D clone() {
+        return Point3D(x, y, z, w);
+    }
+
+    // Getter函数
+    double getX() const { return x; }
+    double getY() const { return y; }
+    double getZ() const { return z; }
+    double getW() const { return w; }
+
+    // Setter函数
+    void setX(double val) { x = val; }
+    void setY(double val) { y = val; }
+    void setZ(double val) { z = val; }
+    void setW(double val) { w = val; }
+
+    Vector3D pointTo(Point3D other) {
+        double dx = other.x - x;
+        double dy = other.y - y;
+        double dz = other.z - z;
+        return Vector3D(dx, dy, dz);
+    }
+
+    //平移当前点
+    void translate(Vector3D vec) {
+        x += vec.getDx();
+        y += vec.getDy();
+        z += vec.getDz();
+    }
+
+    //平移后返回新点
+    Point3D translated(Vector3D vec) const{
+        double newX = x + vec.getDx();
+        double newY = y + vec.getDy();
+        double newZ = z + vec.getDz();
+        return Point3D(newX, newY, newZ,vec.getDw());
+    }
+
+    Point3D multiplied(Matrix3D m) const{
+        double newX = x * m.a[0][0] + y * m.a[1][0] + z * m.a[2][0] + w * m.a[3][0];
+        double newY = x * m.a[0][1] + y * m.a[1][1] + z * m.a[2][1] + w * m.a[3][1];
+        double newZ = x * m.a[0][2] + y * m.a[1][2] + z * m.a[2][2] + w * m.a[3][2];
+        return Point3D(newX, newY, newZ);
+    }
+
+    double distance(Point3D other) {
+        return pointTo(other).length();
+    }
+
+    double distanceSquare(Point3D other) {
+        return pointTo(other).lengthSquare();
+    }
+
+    //两点中点
+    Point3D middle(Point3D other) {
+        double midX = (x + other.x) / 2;
+        double midY = (y + other.y) / 2;
+        double midZ = (z + other.z) / 2;
+        return Point3D(midX, midY, midZ);
+    }
+
+    //重合
+    bool isCoincide(Point3D other, double dis2 = epsilonSquare) {
+        double d2 = pointTo(other).lengthSquare();
+        if (d2 <= dis2) {
+            return true;
         }
-        return result;
-    }
-
-    void makeIdentical() {
-        a = { {1, 0, 0, 0}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1} };
-    }
-
-    Matrix3D multiplied(const Matrix3D& other) const {
-        Matrix3D res;
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                res.a[i][j] = a[i][0] * other.a[0][j]
-                    + a[i][1] * other.a[1][j]
-                    + a[i][2] * other.a[2][j]
-                    + a[i][3] * other.a[3][j];
-            }
+        else {
+            return false;
         }
-        return res;
     }
 
-    int getDeterminant() const {
-        // 计算行列式，请根据实际情况进行实现
-    }
-
-    Matrix3D getReverseMatrix() const {
-        // 计算逆矩阵，请根据实际情况进行实现
-    }
-
-    //生成平移矩阵
-    static Matrix3D createTranslateMatrix(int dx, int dy, int dz) {
-        Matrix3D m;
-        m.a[3][0] = dx;
-        m.a[3][1] = dy;
-        m.a[3][2] = dz;
-        return m;
-    }
-
-    //缩放矩阵
-    static Matrix3D createScaleMatrix(int sx, int sy, int sz) {
-        Matrix3D m;
-        m.a[0][0] = sx;
-        m.a[1][1] = sy;
-        m.a[2][2] = sz;
-        return m;
-    }
-
-    //旋转矩阵
-    static Matrix3D createRotateMatrix(const std::string& axis, double angle) {
-        Matrix3D m;
-        double sinVal = std::sin(angle);
-        double cosVal = std::cos(angle);
-
-        if (axis == "X" || axis == "x") {
-            m.a[1][1] = cosVal;
-            m.a[1][2] = sinVal;
-            m.a[2][1] = -sinVal;
-            m.a[2][2] = cosVal;
+    //是否完全重合
+    bool isIdentical(Point3D other) {
+        if (x == other.x && y == other.y && z == other.z) {
+            return true;
         }
-        else if (axis == "Y" || axis == "y") {
-            m.a[0][0] = cosVal;
-            m.a[0][2] = -sinVal;
-            m.a[2][0] = sinVal;
-            m.a[2][2] = cosVal;
+        else {
+            return false;
         }
-        else if (axis == "Z" || axis == "z") {
-            m.a[0][0] = cosVal;
-            m.a[0][1] = sinVal;
-            m.a[1][0] = -sinVal;
-            m.a[1][1] = cosVal;
-        }
-        return m;
     }
 
-    static Matrix3D createMirrorMatrix(const std::vector<int>& point, const std::vector<int>& normal) {
-        // 创建镜面矩阵，请根据实际情况进行实现
+    Point3D operator+(Vector3D vec) {
+        return translated(vec);
     }
 
-    Matrix3D operator*(const Matrix3D& other) const {
-        return multiplied(other);
+    Vector3D operator-(Point3D other) {
+        return pointTo(other);
     }
 
-    Matrix3D operator+(const Matrix3D& other) const {
-        Matrix3D res;
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                res.a[i][j] = a[i][j] + other.a[i][j];
-            }
-        }
-        return res;
-    }
-
-    Matrix3D operator-(const Matrix3D& other) const {
-        Matrix3D res;
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                res.a[i][j] = a[i][j] - other.a[i][j];
-            }
-        }
-        return res;
+    Point3D operator*(Matrix3D matrix) {
+        double newX = x * matrix.a[0][0] + y * matrix.a[1][0] + z * matrix.a[2][0] + w * matrix.a[3][0];
+        double newY = x * matrix.a[0][1] + y * matrix.a[1][1] + z * matrix.a[2][1] + w * matrix.a[3][1];
+        double newZ = x * matrix.a[0][2] + y * matrix.a[1][2] + z * matrix.a[2][2] + w * matrix.a[3][2];      
+        double newW = x * matrix.a[0][3] + y * matrix.a[1][3] + z * matrix.a[2][3] + w * matrix.a[3][3];
+        return Point3D(newX, newY, newZ, newW);
     }
 };
+
+

@@ -1,0 +1,62 @@
+﻿  computationgeometry.cpp
+C:\Users\leisainan\workspace\computationgeometry\computationgeometry\GeomBase.h(88,25): warning C4244: “=”: 从“double”转换到“_Ty”，可能丢失数据
+          with
+          [
+              _Ty=int
+          ]
+C:\Users\leisainan\workspace\computationgeometry\computationgeometry\GeomBase.h(89,25): warning C4244: “=”: 从“double”转换到“_Ty”，可能丢失数据
+          with
+          [
+              _Ty=int
+          ]
+C:\Users\leisainan\workspace\computationgeometry\computationgeometry\GeomBase.h(90,25): warning C4244: “=”: 从“double”转换到“_Ty”，可能丢失数据
+          with
+          [
+              _Ty=int
+          ]
+C:\Users\leisainan\workspace\computationgeometry\computationgeometry\GeomBase.h(91,25): warning C4244: “=”: 从“double”转换到“_Ty”，可能丢失数据
+          with
+          [
+              _Ty=int
+          ]
+C:\Users\leisainan\workspace\computationgeometry\computationgeometry\GeomBase.h(94,25): warning C4244: “=”: 从“double”转换到“_Ty”，可能丢失数据
+          with
+          [
+              _Ty=int
+          ]
+C:\Users\leisainan\workspace\computationgeometry\computationgeometry\GeomBase.h(95,25): warning C4244: “=”: 从“double”转换到“_Ty”，可能丢失数据
+          with
+          [
+              _Ty=int
+          ]
+C:\Users\leisainan\workspace\computationgeometry\computationgeometry\GeomBase.h(96,25): warning C4244: “=”: 从“double”转换到“_Ty”，可能丢失数据
+          with
+          [
+              _Ty=int
+          ]
+C:\Users\leisainan\workspace\computationgeometry\computationgeometry\GeomBase.h(97,25): warning C4244: “=”: 从“double”转换到“_Ty”，可能丢失数据
+          with
+          [
+              _Ty=int
+          ]
+C:\Users\leisainan\workspace\computationgeometry\computationgeometry\GeomBase.h(100,25): warning C4244: “=”: 从“double”转换到“_Ty”，可能丢失数据
+          with
+          [
+              _Ty=int
+          ]
+C:\Users\leisainan\workspace\computationgeometry\computationgeometry\GeomBase.h(101,25): warning C4244: “=”: 从“double”转换到“_Ty”，可能丢失数据
+          with
+          [
+              _Ty=int
+          ]
+C:\Users\leisainan\workspace\computationgeometry\computationgeometry\GeomBase.h(102,25): warning C4244: “=”: 从“double”转换到“_Ty”，可能丢失数据
+          with
+          [
+              _Ty=int
+          ]
+C:\Users\leisainan\workspace\computationgeometry\computationgeometry\GeomBase.h(103,25): warning C4244: “=”: 从“double”转换到“_Ty”，可能丢失数据
+          with
+          [
+              _Ty=int
+          ]
+  computationgeometry.vcxproj -> C:\Users\leisainan\workspace\computationgeometry\x64\Debug\computationgeometry.exe
