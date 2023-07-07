@@ -1,9 +1,10 @@
 ﻿#include "GeomBase.h"
+#include "Line.h"
 
 int main()
 {
     //点、向量、矩阵的用法
-    Point3D p1(1, 1, 1);
+    /*Point3D p1(1, 1, 1);
     Point3D p2(2, 2, 2);
     double dis = p1.distance(p2);
     std::cout << p1.getX() - p2.getX() << " " << p1.getY() - p2.getY() << " " << p1.getZ() - p2.getZ() << std::endl;
@@ -26,7 +27,13 @@ int main()
             std::cout << m.a[i][j] << " ";
         }
         std::cout << std::endl;
-    }
+    }*/
+
+    Point3D p(1, 2, 3);
+    Vector3D v(4, 5, 6);
+    Line line(p, v);
+    p.setX(0);
+
 
 }
 
