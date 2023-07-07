@@ -105,8 +105,23 @@ public:
         return m;
     }
 
-    static Matrix3D createMirrorMatrix(const std::vector<int>& point, const std::vector<int>& normal) {
+    static Matrix3D createMirrorMatrix(const std::vector<int>& point, int n) {
         // 创建镜面矩阵，请根据实际情况进行实现
+        Matrix3D m;
+        if (n == 0) {   //0-关于XY平面镜像变换
+            m.a[0][0] = -1;
+            m.a[1][1] = -1;
+        }
+        else if (n == 1) {  //1-关于XZ平面镜像变换
+            m.a[0][0] = -1;
+            m.a[2][2] = -1;
+        }
+        else {  //2-关于YZ平面镜像变换
+            m.a[1][1] = -1;
+            m.a[2][2] = -1;
+        }
+
+        return m;
     }
 
     Matrix3D operator*(const Matrix3D& other) const {
