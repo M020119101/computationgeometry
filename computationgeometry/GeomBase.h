@@ -218,7 +218,7 @@ public:
         return sqrt(lengthSquare());
     }
 
-    void normalize() {
+    void normalize(){
         double len = length();
         dx /= len;
         dy /= len;
