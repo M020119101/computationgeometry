@@ -1,6 +1,7 @@
 ﻿#include "GeomBase.h"
 #include "Line.h"
 #include "Ray.h"
+#include "Segment.h"
 
 int main()
 {
@@ -31,15 +32,25 @@ int main()
     }*/
 
     //直线用法
-    Point3D p(1, 2, 3);
-    Vector3D v(4, 5, 6);
-    Line line(p, v);
-    p.setX(0);
+    //Point3D p(1, 2, 3);
+    //Vector3D v(4, 5, 6);
+    //Line line(p, v);
+    //p.setX(0);
 
-    //射线用法
-    Ray ray(p, v);
+    ////射线用法
+    //Ray ray(p, v);
 
-    std::cout << ray.toString() << std::endl;
+    //std::cout << ray.toString() << std::endl;
+
+    Point3D A(1.0, 2.0, 4.0);
+    Point3D B(2.0, 3.0, 4.0);
+
+    Segment seg(A, B);
+
+    std::cout << seg.toString() << std::endl;
+
+    seg.swap();
+    std::cout << seg.toString() << std::endl;
 
     return 0;
 
