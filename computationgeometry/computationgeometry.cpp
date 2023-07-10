@@ -1,5 +1,6 @@
 ﻿#include "GeomBase.h"
 #include "Line.h"
+#include "Ray.h"
 
 int main()
 {
@@ -29,11 +30,18 @@ int main()
         std::cout << std::endl;
     }*/
 
+    //直线用法
     Point3D p(1, 2, 3);
     Vector3D v(4, 5, 6);
     Line line(p, v);
     p.setX(0);
 
+    //射线用法
+    Ray ray(p, v);
+
+    std::cout << ray.toString() << std::endl;
+
+    return 0;
 
 }
 

@@ -132,6 +132,7 @@
   <ItemGroup>
     <ClInclude Include="GeomBase.h" />
     <ClInclude Include="Line.h" />
+    <ClInclude Include="Ray.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
